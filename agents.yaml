@@ -1,0 +1,43 @@
+defaults:
+  model_profile: qwen_cpu
+
+model_profiles:
+  qwen_cpu:
+    model_name: "qwen2.5:0.5b"
+    temperature: 0.0
+  qwen_creative:
+    model_name: "qwen2.5:0.5b"
+    temperature: 0.7
+
+prompt_templates:
+  math_specialist: |
+    You are a math specialist. Solve precisely. Keep responses very short.
+  general_assistant: |
+    You are a helpful assistant. Keep responses under 50 words.
+
+evolution:
+  num_islands: 2
+  pop_per_island: 3
+  max_generations: 2
+  eval_timeout: 3.0
+  max_archive_size: 8
+
+research:
+  critique_rounds: 1
+
+workflow:
+  pattern: supervisor
+
+agents:
+  - name: math_agent
+    prompt_blocks: ["$math_specialist"]
+    tools: [calculator]
+    model_profile: qwen_cpu
+    metadata:
+      role: mathematics
+  - name: general_agent
+    prompt_blocks: ["$general_assistant"]
+    tools: []
+    model_profile: qwen_cpu
+    metadata:
+      role: general
